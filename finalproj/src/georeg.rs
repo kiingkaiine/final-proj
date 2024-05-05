@@ -17,7 +17,7 @@ pub fn construct_graph(records: &[FlightRecord]) -> DiGraph<String, u32> {
             "Enplaned" => String::from("US"),
             "Deplaned" => String::from("US"),
             "Thru/Transit" => String::from("US"),
-            _ => continue, // Skip records with unknown activity type
+            _ => continue, //Skip records with unknown activity type
         };
     
         let origin_node = graph.add_node(origin_region.clone());
@@ -47,14 +47,14 @@ pub fn analyze_centrality(graph: &DiGraph<String, u32>) {
             .map(|edge| *edge.weight() as f64)
             .sum();
 
-        let mut count: f64 = 1.0; // Start with 1 to include the node itself
+        let mut count: f64 = 1.0; //Start with 1 to include the node itself
         for other_node in graph.node_indices() {
             if graph[other_node] == *region && other_node != node {
                 count += 1.0;
             }
         }
 
-        let centrality = total_weight / (count - 1.0); // Subtract 1 to exclude the node itself
+        let centrality = total_weight / (count - 1.0); //Subtract 1 to exclude the node itself
         centrality_scores.insert(region.clone(), centrality);
         processed_regions.insert(region.clone());
     }
@@ -70,7 +70,7 @@ mod tests {
     use super::*;
     #[test]
     fn test_analyze_centrality() {
-        // Create a sample graph
+        //Creates a sample graph
         let mut graph = DiGraph::new();
         let node1 = graph.add_node("Region1".to_string());
         let node2 = graph.add_node("Region2".to_string());
