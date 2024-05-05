@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 use crate::FlightRecord;
 
+//Set up regression calculations
 pub fn linear_regression(x: &[f64], y: &[f64]) -> (f64, f64) {
     let x_mean = x.iter().sum::<f64>() / x.len() as f64;
     let y_mean = y.iter().sum::<f64>() / y.len() as f64;
@@ -14,11 +15,12 @@ pub fn linear_regression(x: &[f64], y: &[f64]) -> (f64, f64) {
     (slope, intercept)
 }
 
+//Use regression to predict following year's passenger volumes each month
 pub fn predict_passenger_counts_by_month(records: &[FlightRecord]) -> HashMap<String, u32> {
     let mut passenger_counts_by_month: HashMap<String, u32> = HashMap::new();
     let mut months_seen: Vec<String> = Vec::new();
 
-    // Step 1: Aggregate passenger counts for each month
+    //Aggregate passenger counts for each month
     for record in records {
         let activity_period = &record.activity_period;
         let year = &activity_period[..4];
@@ -30,7 +32,7 @@ pub fn predict_passenger_counts_by_month(records: &[FlightRecord]) -> HashMap<St
         months_seen.push(format!("{}-{}", year, month));
     }
 
-    // Step 2: Fit linear regression model
+    //Fit linear regression model
     let mut x: Vec<f64> = Vec::new();
     let mut y: Vec<f64> = Vec::new();
     for month_str in &months_seen {
@@ -44,7 +46,7 @@ pub fn predict_passenger_counts_by_month(records: &[FlightRecord]) -> HashMap<St
 
     let (slope, intercept) = linear_regression(&x, &y);
 
-    // Step 3: Predict passenger counts for the next year
+    //Predict passenger counts for the next year
     if let Some(last_month) = months_seen.last() {
         let (last_year, _) = last_month.split_at(4);
         let last_year = last_year.parse::<i32>().unwrap();
@@ -67,19 +69,19 @@ mod tests {
     use super::*;
     #[test]
     pub fn test_linear_regression() {
-        // Test case 1: Simple linear relationship
+        //Test 1: Simple linear relationship
         let x1 = vec![1.0, 2.0, 3.0, 4.0, 5.0];
         let y1 = vec![2.0, 4.0, 6.0, 8.0, 10.0];
         let (slope1, intercept1) = linear_regression(&x1, &y1);
-        assert_eq!(slope1, 2.0); // Expected slope
-        assert_eq!(intercept1, 0.0); // Expected intercept
+        assert_eq!(slope1, 2.0); //Expected slope
+        assert_eq!(intercept1, 0.0); //Expected intercept
 
-        // Test case 2: Negative slope
+        //Test 2: Negative slope
         let x2 = vec![1.0, 2.0, 3.0, 4.0, 5.0];
         let y2 = vec![10.0, 8.0, 6.0, 4.0, 2.0];
         let (slope2, intercept2) = linear_regression(&x2, &y2);
-        assert_eq!(slope2, -2.0); // Expected slope
-        assert_eq!(intercept2, 12.0); // Expected intercept
+        assert_eq!(slope2, -2.0); //Expected slope
+        assert_eq!(intercept2, 12.0); //Expected intercept
     }
 
 }

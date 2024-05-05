@@ -1,9 +1,3 @@
-extern crate csv;
-extern crate serde;
-extern crate serde_json;
-extern crate plotters;
-extern crate petgraph;
-
 use petgraph::graph::DiGraph;
 use std::collections::HashMap;
 use std::collections::HashSet;
@@ -11,6 +5,7 @@ use std::collections::HashSet;
 use petgraph::Direction;
 use crate::FlightRecord;
 
+//Creates graph of nodes with the origin geo region, destination geo region, and the weight of each node (passenger volume)
 pub fn construct_graph(records: &[FlightRecord]) -> DiGraph<String, u32> {
     let mut graph = DiGraph::new();
 
@@ -34,9 +29,7 @@ pub fn construct_graph(records: &[FlightRecord]) -> DiGraph<String, u32> {
     graph
 }
 
-
-
-
+//Analyze centrality (importance) of each geo region in the graph
 pub fn analyze_centrality(graph: &DiGraph<String, u32>) {
     // Calculate degree centrality for each node
     let mut centrality_scores: HashMap<String, f64> = HashMap::new();
@@ -86,10 +79,6 @@ mod tests {
         graph.add_edge(node1, node2, 100);
         graph.add_edge(node1, node3, 200);
         graph.add_edge(node2, node3, 150);
-
-        // Call the function under test
         analyze_centrality(&graph);
-
-        // No assertions as this function prints the centrality scores
     }
 }
