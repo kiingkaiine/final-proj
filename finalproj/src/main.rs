@@ -4,11 +4,9 @@ extern crate serde_json;
 extern crate plotters;
 extern crate petgraph;
 
-use std::collections::HashMap;
 use csv::ReaderBuilder;
 use std::error::Error;
 use std::fs::File;
-use plotters::prelude::*;
 use serde::Deserialize;
 mod georeg;
 mod predcount;
