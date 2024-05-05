@@ -71,3 +71,25 @@ pub fn analyze_centrality(graph: &DiGraph<String, u32>) {
         println!("Region {}: Centrality: {}", region, centrality);
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn test_analyze_centrality() {
+        // Create a sample graph
+        let mut graph = DiGraph::new();
+        let node1 = graph.add_node("Region1".to_string());
+        let node2 = graph.add_node("Region2".to_string());
+        let node3 = graph.add_node("Region3".to_string());
+
+        graph.add_edge(node1, node2, 100);
+        graph.add_edge(node1, node3, 200);
+        graph.add_edge(node2, node3, 150);
+
+        // Call the function under test
+        analyze_centrality(&graph);
+
+        // No assertions as this function prints the centrality scores
+    }
+}

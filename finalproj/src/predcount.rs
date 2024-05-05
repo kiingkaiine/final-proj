@@ -60,3 +60,26 @@ pub fn predict_passenger_counts_by_month(records: &[FlightRecord]) -> HashMap<St
         HashMap::new()
     }
 }
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    pub fn test_linear_regression() {
+        // Test case 1: Simple linear relationship
+        let x1 = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+        let y1 = vec![2.0, 4.0, 6.0, 8.0, 10.0];
+        let (slope1, intercept1) = linear_regression(&x1, &y1);
+        assert_eq!(slope1, 2.0); // Expected slope
+        assert_eq!(intercept1, 0.0); // Expected intercept
+
+        // Test case 2: Negative slope
+        let x2 = vec![1.0, 2.0, 3.0, 4.0, 5.0];
+        let y2 = vec![10.0, 8.0, 6.0, 4.0, 2.0];
+        let (slope2, intercept2) = linear_regression(&x2, &y2);
+        assert_eq!(slope2, -2.0); // Expected slope
+        assert_eq!(intercept2, 12.0); // Expected intercept
+    }
+
+}
